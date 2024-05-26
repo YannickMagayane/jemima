@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Ticket</title>
@@ -19,23 +19,58 @@
             margin: 0;
             padding: 0;
         }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header, .footer {
+            text-align: center;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .footer {
+            border-top: 2px solid #e5e7eb;
+            border-bottom: none;
+            padding-top: 10px;
+            margin-top: 20px;
+        }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #4b5563;
+            margin-bottom: 10px;
+        }
+        .detail {
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
-<body onload="window.print()">
-    <div class="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-8 mt-10">
-        <div class="text-center border-b-2 border-gray-200 pb-4 mb-6">
-            <h1 class="text-3xl font-bold text-gray-800">Ticket pour {{ ticket.destination.name }}</h1>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Ticket pour {{ ticket.destination.name }}</h1>
         </div>
-        <div class="mb-6">
-            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Détails du Ticket</h2>
-            <p class="text-gray-600"><strong>Nom du passager :</strong> {{ payment.ticket.user.name }} {{ payment.ticket.user.last_name }}</p>
-            <p class="text-gray-600"><strong>Numéro de téléphone :</strong> {{ ticket.user.phone_number }}</p>
-            <p class="text-gray-600"><strong>Date de départ :</strong> {{ ticket.departure_date }}</p>
-            <p class="text-gray-600"><strong>Heure de départ :</strong> {{ ticket.departure_time }}</p>
-            <p class="text-gray-600"><strong>Montant payé :</strong> {{ ticket.amount_paid }} Fc</p>
-            <p class="text-gray-600"><strong>Date d'achat :</strong> {{ ticket.purchase_date }}</p>
+        <div>
+            <h2 class="section-title">Détails du Ticket</h2>
+            <p class="detail"><strong>Nom du passager :</strong> {{ ticket.user.name }} {{ ticket.user.last_name }}</p>
+            <p class="detail"><strong>Numéro de téléphone :</strong> {{ ticket.user.phone_number }}</p>
+            <p class="detail"><strong>Date de départ :</strong> {{ ticket.departure_date }}</p>
+            <p class="detail"><strong>Heure de départ :</strong> {{ ticket.departure_time }}</p>
+            <p class="detail"><strong>Montant payé :</strong> {{ ticket.amount_paid }} Fc</p>
+            <p class="detail"><strong>Date d'achat :</strong> {{ ticket.purchase_date }}</p>
         </div>
-        <div class="text-center border-t-2 border-gray-200 pt-4">
+        <div class="footer">
             <p class="text-gray-500">Merci d'avoir choisi notre service. Bon voyage !</p>
         </div>
     </div>
