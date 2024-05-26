@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}Destinations{% endblock %}
+
+{% block content %}
+    <style>
+        .card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+        }
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.3s ease-in-out;
+        }
+        .card:hover img {
+            transform: scale(1.1);
+        }
+        .card-content {
+            padding: 1.5rem;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .card-price {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        .btn-buy {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            background-color: #007bff;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+        .btn-buy:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+    <h1 class="text-3xl font-bold mb-8">Explorer des belles destinations</h1>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        {% for destination in destinations %}
+            <div class="card">
+                <img src="{{ destination.photo.url }}" alt="{{ destination.name }}">
+                <div class="card-content">
+                    <h2 class="card-title">{{ destination.name }}</h2>
+                    <p class="card-price">FC{{ destination.montant }} </p>
+                    <a href="{% url 'purchase_ticket' destination.id %}" class="btn-buy">Acheter billet</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

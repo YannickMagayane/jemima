@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}Purchase Ticket{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-10">
+    <div class="w-full max-w-lg mx-auto bg-white rounded-lg shadow-lg p-8">
+        <h1 class="text-3xl font-bold mb-8 text-gray-800">Achat du ticket pour {{ destination.name }}</h1>
+        
+        <!-- Affichage des messages -->
+        {% if messages %}
+            <div>
+                {% for message in messages %}
+                    <div class="message mb-4 p-4 rounded-md transition duration-500 ease-in-out transform hover:scale-105
+                                {% if message.tags == 'error' %}bg-red-100 text-red-700{% elif message.tags == 'success' %}bg-green-100 text-green-700{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <!-- Formulaire d'achat de ticket -->
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                {{ ticket_form.non_field_errors }}
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2" for="id_departure_date">Date de départ</label>
+                    {{ ticket_form.departure_date }}
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2" for="id_departure_time">Heure de départ</label>
+                    {{ ticket_form.departure_time }}
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2" for="id_amount_paid">Montant payé</label>
+                    {{ ticket_form.amount_paid }}
+                </div>
+                {% for error in ticket_form.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+            
+            <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 ease-in-out transform hover:scale-105">
+                Acheter le ticket
+            </button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .form-group {
+        background-color: #f9fafb;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+    }
+    form .form-group {
+        margin-bottom: 1.5rem;
+    }
+    form input[type="date"], form input[type="time"], form input[type="number"] {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    form input[type="date"]:focus, form input[type="time"]:focus, form input[type="number"]:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        outline: none;
+    }
+    .message {
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    .message:hover {
+        transform: scale(1.05);
+    }
+</style>
+{% endblock %}

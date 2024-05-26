@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Liste des Paiements{% endblock %}
+
+{% block content %}
+    <style>
+        .payment-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .payment-table th, .payment-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .payment-table th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+        .payment-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        .filter-form {
+            margin-bottom: 20px;
+        }
+        .filter-form input[type="date"] {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 0.25rem;
+            margin-right: 10px;
+        }
+        .filter-form button {
+            padding: 0.5rem 1rem;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+        .filter-form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+    <h1 class="text-3xl font-bold mb-8">Liste des Paiements</h1>
+
+    <form method="get" class="filter-form">
+        <label for="start_date">Date de début:</label>
+        <input type="date" id="start_date" name="start_date" value="{{ start_date|date:'Y-m-d' }}">
+        <label for="end_date">Date de fin:</label>
+        <input type="date" id="end_date" name="end_date" value="{{ end_date|date:'Y-m-d' }}">
+        <button type="submit">Filtrer</button>
+    </form>
+
+    <table class="payment-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ticket ID</th>
+                <th>Nom de l'Acheteur</th>
+                <th>Numéro de Téléphone</th>
+                <th>Transaction ID</th>
+                <th>Date de Paiement</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.id }}</td>
+                    <td>{{ payment.ticket.id }}</td>
+                    <td>{{ payment.ticket.user.name }} {{ payment.ticket.user.last_name }}</td>
+                    <td>{{ payment.ticket.user.phone_number }}</td>
+                    <td>{{ payment.transaction_id }}</td>
+                    <td>{{ payment.payment_date }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

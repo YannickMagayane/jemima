@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Ajouter une Destination{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-10">
+    <div class="w-full max-w-lg mx-auto bg-white rounded-lg shadow-lg p-8">
+        <h1 class="text-3xl font-bold mb-8 text-gray-800">Ajouter une nouvelle destination</h1>
+        
+        <!-- Affichage des messages -->
+        {% if messages %}
+            <div>
+                {% for message in messages %}
+                    <div class="message mb-4 p-4 rounded-md transition duration-500 ease-in-out transform hover:scale-105
+                                {% if message.tags == 'error' %}bg-red-100 text-red-700{% elif message.tags == 'success' %}bg-green-100 text-green-700{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <!-- Formulaire d'ajout de destination -->
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                
+                    <div class="mb-4">
+                        {{ form.as_p }}
+                    </div>
+            </div>
+            
+            <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 ease-in-out transform hover:scale-105">
+                Ajouter la destination
+            </button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .form-group {
+        background-color: #f9fafb;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+    }
+    form .form-group {
+        margin-bottom: 1.5rem;
+    }
+    form input, form select, form textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    form input:focus, form select:focus, form textarea:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        outline: none;
+    }
+    .message {
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    .message:hover {
+        transform: scale(1.05);
+    }
+</style>
+{% endblock %}
