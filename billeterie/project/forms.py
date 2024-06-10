@@ -4,13 +4,13 @@ from django.contrib.auth import authenticate
 from .models import User, Destination, Ticket, Payment
 
 class LoginForm(forms.Form):
-    phone_number = forms.CharField(
+    email = forms.EmailField(
         label="",
-        widget=forms.TextInput(
+        widget=forms.EmailInput(
             attrs={
-                "class": "border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300",
-                "placeholder": "Numéro de téléphone",
-                "title": "Numéro de téléphone"
+                "class": "border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300 w-full",
+                "placeholder": "Adresse mail",
+                "title": "Adresse mail"
             }
         )
     )
@@ -18,12 +18,13 @@ class LoginForm(forms.Form):
         label="",
         widget=forms.PasswordInput(
             attrs={
-                "class": "border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300",
+                "class": "border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300 w-full",
                 "placeholder": "Mot de passe",
                 "title": "Mot de passe"
             }
         )
     )
+
 
     def clean(self):
         cleaned_data = super().clean()
@@ -42,19 +43,29 @@ class RegisterForm(UserCreationForm):
         label="",
         widget=forms.TextInput(
             attrs={
-                "class": "border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300",
+                "class": "border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300 w-full",
                 "placeholder": "Numéro de téléphone",
                 "title": "Numéro de téléphone"
             }
         )
     )
 
+    email = forms.EmailField(
+        label="",
+        widget=forms.EmailInput(
+            attrs={
+                "class": "border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300 w-full",
+                "placeholder": "Adresse mail",
+                "title": "Adresse mail"
+            }
+        )
+    )
 
     name = forms.CharField(
         label="",
         widget=forms.TextInput(
             attrs={
-                "class": "border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300",
+                "class": "border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300 w-full",
                 "placeholder": "Prénom",
                 "title": "Prénom"
             }
@@ -64,7 +75,7 @@ class RegisterForm(UserCreationForm):
         label="",
         widget=forms.TextInput(
             attrs={
-                "class": "border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300",
+                "class": "border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300 w-full",
                 "placeholder": "Nom de famille",
                 "title": "Nom de famille"
             }
@@ -75,7 +86,7 @@ class RegisterForm(UserCreationForm):
         label="",
         widget=forms.PasswordInput(
             attrs={
-                "class": "border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300",
+                "class": "border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300 w-full",
                 "placeholder": "Mot de passe",
                 "title": "Mot de passe"
             }
@@ -85,7 +96,7 @@ class RegisterForm(UserCreationForm):
         label="",
         widget=forms.PasswordInput(
             attrs={
-                "class": "border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300",
+                "class": "border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300 w-full",
                 "placeholder": "Confirmer le mot de passe",
                 "title": "Confirmer le mot de passe"
             }
@@ -94,7 +105,9 @@ class RegisterForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('name', 'last_name', 'phone_number', 'password1', 'password2')
+        fields = ('phone_number', 'email', 'name', 'last_name', 'password1', 'password2')
+
+    
 
 
 # Form for Destination

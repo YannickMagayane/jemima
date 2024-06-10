@@ -15,22 +15,24 @@ from datetime import datetime
 
 # Vue de connexion
 def user_login(request):
+    form = LoginForm(request.POST or None)
+    msg = ""
     if request.method == 'POST':
-        form = LoginForm(request.POST)
         if form.is_valid():
-            phone_number = form.cleaned_data['phone_number']
-            password = form.cleaned_data['password']
-            user = authenticate(phone_number=phone_number, password=password)
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')  # Rediriger vers la page d'accueil après la connexion
+                return redirect('/')
+                
             else:
-                messages.error(request, "Le numéro de téléphone ou le mot de passe est incorrect.")  # Message d'erreur si l'utilisateur n'est pas reconnu
+                msg = 'Information invalide'
         else:
-            messages.error(request, "Veuillez remplir tous les champs.")  # Message d'erreur si des informations sont manquantes dans le formulaire
+            msg = 'Email ou mot de passe invalide'
     else:
-        form = LoginForm()
-    return render(request, 'login.html', {'form': form})
+        msg = 'Erreur de validation'
+    return render(request, 'login.html', {'form': form, 'msg': msg })
 
 
 def user_register(request):
@@ -126,14 +128,27 @@ def purchase_ticket(request, destination_id):
 def payment_list(request):
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
+    destination_id = request.GET.get('destination')
+    
     payments = Payment.objects.all().order_by('-payment_date')
 
     if start_date and end_date:
         start_date = datetime.strptime(start_date, '%Y-%m-%d')
         end_date = datetime.strptime(end_date, '%Y-%m-%d')
         payments = payments.filter(payment_date__range=(start_date, end_date))
+    
+    if destination_id:
+        payments = payments.filter(ticket__destination_id=destination_id)
+    
+    destinations = Destination.objects.all()
 
-    return render(request, 'payment_list.html', {'payments': payments, 'start_date': start_date, 'end_date': end_date})
+    return render(request, 'payment_list.html', {
+        'payments': payments,
+        'start_date': start_date,
+        'end_date': end_date,
+        'destinations': destinations,
+        'selected_destination': destination_id
+    })
 
 
 

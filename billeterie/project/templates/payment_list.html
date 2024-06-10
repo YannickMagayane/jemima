@@ -22,7 +22,8 @@
         .filter-form {
             margin-bottom: 20px;
         }
-        .filter-form input[type="date"] {
+        .filter-form input[type="date"],
+        .filter-form select {
             padding: 0.5rem;
             border: 1px solid #ddd;
             border-radius: 0.25rem;
@@ -46,8 +47,20 @@
     <form method="get" class="filter-form">
         <label for="start_date">Date de début:</label>
         <input type="date" id="start_date" name="start_date" value="{{ start_date|date:'Y-m-d' }}">
+        
         <label for="end_date">Date de fin:</label>
         <input type="date" id="end_date" name="end_date" value="{{ end_date|date:'Y-m-d' }}">
+        
+        <label for="destination">Destination:</label>
+        <select id="destination" name="destination">
+            <option value="">Toutes</option>
+            {% for destination in destinations %}
+                <option value="{{ destination.id }}" {% if selected_destination == destination.id|stringformat:"s" %}selected{% endif %}>
+                    {{ destination.name }}
+                </option>
+            {% endfor %}
+        </select>
+        
         <button type="submit">Filtrer</button>
     </form>
 
@@ -60,6 +73,7 @@
                 <th>Numéro de Téléphone</th>
                 <th>Transaction ID</th>
                 <th>Date de Paiement</th>
+                <th>Destination</th>
             </tr>
         </thead>
         <tbody>
@@ -71,6 +85,7 @@
                     <td>{{ payment.ticket.user.phone_number }}</td>
                     <td>{{ payment.transaction_id }}</td>
                     <td>{{ payment.payment_date }}</td>
+                    <td>{{ payment.ticket.destination.name }}</td>
                 </tr>
             {% endfor %}
         </tbody>

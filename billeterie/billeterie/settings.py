@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
 ]
 
 MIDDLEWARE = [
@@ -115,14 +115,40 @@ AUTHENTICATION_BACKENDS = (
     
 )
 
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook':{
+        'METHOD':'oauth2',
+        #'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
+        'SCOPE' : ['email','public_profile'],
+        'AUTH_PARAMS' : {'auth_type' : 'reauhenticate'},
+        'INIT_PARAMS' : {'cookie' : True},
+        'FIELDS' : [
+
+            'id',
+            'first_name',
+            'last_name',
+            'middle_name',
+            'name',
+            'name_format',
+            'picture',
+            'short_name',
+        ],
+        'EXCHANGE_TOKEN':True,
+        #'LOCALE_FUNC' : 'path.to.callable',
+        'VERIFIED_EMAIL' : False,
+        'VERSION' : 'v13.0',
+    }
+}
+
 SITE_ID = 1
 
-ACCOUNT_USER_MODEL_USERNAME_FIELD = 'phone_number'
-ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_QUERY_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = 'phone_number'
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_USER_EMAIL_FIELD = 'email'
-
+ACCOUNT_LOGOUT_REDIRECT_URL = 'user_login'
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
