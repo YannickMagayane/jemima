@@ -62,6 +62,7 @@
                 <div class="card-content">
                     <h2 class="card-title">{{ destination.name }}</h2>
                     <p class="card-price">FC{{ destination.montant }} </p>
+                    <p class="card-detail"><strong>Heure de départ :</strong> {{ destination.heure_depart }}</p> <!-- Ajout de l'heure de départ -->
                     <a href="{% url 'purchase_ticket' destination.id %}" class="btn-buy">Acheter billet</a>
                 </div>
             </div>

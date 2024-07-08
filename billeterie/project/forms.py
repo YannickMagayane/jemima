@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate
-from .models import User, Destination, Ticket, Payment
+from .models import User, Destination, Ticket, Payment,Bus
 
 class LoginForm(forms.Form):
     email = forms.EmailField(
@@ -110,24 +110,38 @@ class RegisterForm(UserCreationForm):
     
 
 
-# Form for Destination
 class DestinationForm(forms.ModelForm):
     class Meta:
         model = Destination
-        fields = ('name', 'photo', 'montant')
+        fields = ('name', 'photo', 'heure_depart', 'montant', 'bus')
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300'}),
-            'photo': forms.FileInput(attrs={'class': 'form-input'}),
-            'montant': forms.NumberInput(attrs={'class': 'border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300'}),
+            'name': forms.TextInput(attrs={
+                'class': 'border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300',
+                'placeholder': 'Nom de la destination'
+            }),
+            'photo': forms.FileInput(attrs={
+                'class': 'form-input border rounded-md px-3 py-2 focus:outline-none focus:ring focus:border-blue-300'
+            }),
+            'heure_depart': forms.TimeInput(attrs={
+                'class': 'border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300',
+                'placeholder': 'Heure de départ',
+                'type': 'time'
+            }),
+            'montant': forms.NumberInput(attrs={
+                'class': 'border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300',
+                'placeholder': 'Montant'
+            }),
+            'bus': forms.Select(attrs={
+                'class': 'border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300'
+            }),
         }
 
 class TicketForm(forms.ModelForm):
     class Meta:
         model = Ticket
-        fields = ['departure_date', 'departure_time', 'amount_paid']
+        fields = ['departure_date', 'amount_paid']
         widgets = {
             'departure_date': forms.DateInput(attrs={'type': 'date'}),
-            'departure_time': forms.TimeInput(attrs={'type': 'time'}),
             'amount_paid': forms.NumberInput(attrs={'min': 0}),
         }
 
@@ -139,4 +153,20 @@ class PaymentForm(forms.ModelForm):
         widgets = {
             'ticket': forms.Select(attrs={'class': 'border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300'}),
             'transaction_id': forms.TextInput(attrs={'class': 'border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300'}),
+        }
+
+class BusForm(forms.ModelForm):
+    class Meta:
+        model = Bus
+        fields = ('nom_bus', 'nombre_place')
+        widgets = {
+            'nom_bus': forms.TextInput(attrs={
+                'class': 'border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300',
+                'placeholder': 'Nom du bus'
+            }),
+            'nombre_place': forms.NumberInput(attrs={
+                'class': 'border rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300',
+                'placeholder': 'Nombre de places'
+            }),
+            
         }

@@ -85,6 +85,9 @@
                     {% if user.is_superuser %}
                         <a href="{% url 'add_destination' %}" class="btn btn-secondary">Ajouter destination</a>
                         <a href="{% url 'payment_list' %}" class="btn btn-secondary">Paiement effectué</a>
+                        <a href="{% url 'create_bus' %}" class="btn btn-secondary">Ajouter Bus</a>
+
+
                     {% endif %}
                     <a href="{% url 'logout' %}" class="btn btn-secondary">Se Déconnecter</a>
                 {% else %}

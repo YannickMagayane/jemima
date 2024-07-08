@@ -60,9 +60,21 @@ class User(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
 
+
+#bus
+class Bus(models.Model):
+    nom_bus = models.CharField(max_length=50)
+    nombre_place = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return self.nom_bus
+
+
 # Destination Model
 class Destination(models.Model):
     name = models.CharField(max_length=100)
+    heure_depart = models.TimeField()
+    bus = models.ForeignKey(Bus,on_delete=models.CASCADE)
     photo = models.ImageField(upload_to='voyage')
     montant = models.PositiveBigIntegerField(default=0)
     def __str__(self):
@@ -74,7 +86,6 @@ class Ticket(models.Model):
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
     purchase_date = models.DateTimeField(auto_now_add=True)
     departure_date = models.DateField()
-    departure_time = models.TimeField()
     is_confirmed = models.BooleanField(default=False)
     amount_paid = models.PositiveBigIntegerField(default=0)
     pdf = models.FileField(upload_to='tickets/', null=True, blank=True)  # Champ pour le fichier PDF
