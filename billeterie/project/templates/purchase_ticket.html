@@ -28,14 +28,7 @@
                     <label class="block text-gray-700 font-bold mb-2" for="id_departure_date">Date de départ</label>
                     {{ ticket_form.departure_date }}
                 </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-bold mb-2" for="id_departure_time">Heure de départ</label>
-                    {{ ticket_form.departure_time }}
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-bold mb-2" for="id_amount_paid">Montant payé</label>
-                    {{ ticket_form.amount_paid }}
-                </div>
+               
                 {% for error in ticket_form.errors %}
                     <p class="text-red-500 text-sm mt-1">{{ error }}</p>
                 {% endfor %}

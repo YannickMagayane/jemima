@@ -139,10 +139,10 @@ class DestinationForm(forms.ModelForm):
 class TicketForm(forms.ModelForm):
     class Meta:
         model = Ticket
-        fields = ['departure_date', 'amount_paid']
+        fields = ['departure_date']
         widgets = {
             'departure_date': forms.DateInput(attrs={'type': 'date'}),
-            'amount_paid': forms.NumberInput(attrs={'min': 0}),
+            #'amount_paid': forms.NumberInput(attrs={'min': 0}),
         }
 
 # Form for Payment

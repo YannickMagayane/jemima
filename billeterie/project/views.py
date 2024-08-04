@@ -111,40 +111,40 @@ def purchase_ticket(request, destination_id):
                     ticket.user = user
                     ticket.is_confirmed = True
 
-                    # Vérifier si le montant payé est suffisant
-                    if ticket.amount_paid < destination.montant:
-                        messages.error(request, "Le montant payé est insuffisant.")
-                    else:
-                        ticket.save()
+                    # Calculer le montant automatique de la destination
+                    ticket.amount_paid = destination.montant
 
-                        # Créer le paiement associé
-                        payment = Payment.objects.create(ticket=ticket, transaction_id="SIMULATED_TRANSACTION_ID")
+                    # Sauvegarder le ticket
+                    ticket.save()
 
-                        # Générer le PDF du ticket
-                        template_path = 'ticket_pdf_template.html'
-                        context = {
-                            'ticket': ticket,
-                            'destination': destination,
-                            'departure_time': destination.heure_depart,  # Ajouter l'heure de départ au contexte
-                        }
-                        template = get_template(template_path)
-                        html = template.render(context)
+                    # Créer le paiement associé
+                    payment = Payment.objects.create(ticket=ticket, transaction_id="SIMULATED_TRANSACTION_ID")
 
-                        # Convertir en PDF
-                        pdf_buffer = io.BytesIO()
-                        pisa_status = pisa.CreatePDF(html, dest=pdf_buffer)
-                        if pisa_status.err:
-                            return HttpResponse('Une erreur est survenue lors de la génération du PDF.')
+                    # Générer le PDF du ticket
+                    template_path = 'ticket_pdf_template.html'
+                    context = {
+                        'ticket': ticket,
+                        'destination': destination,
+                        'departure_time': destination.heure_depart,  # Ajouter l'heure de départ au contexte
+                    }
+                    template = get_template(template_path)
+                    html = template.render(context)
 
-                        pdf_buffer.seek(0)  # Revenir au début du buffer
-                        ticket.pdf.save(f'ticket_{ticket.id}.pdf', pdf_buffer, save=True)
+                    # Convertir en PDF
+                    pdf_buffer = io.BytesIO()
+                    pisa_status = pisa.CreatePDF(html, dest=pdf_buffer)
+                    if pisa_status.err:
+                        return HttpResponse('Une erreur est survenue lors de la génération du PDF.')
 
-                        # Réinitialiser le buffer pour la réponse
-                        pdf_buffer.seek(0)
-                        response = HttpResponse(pdf_buffer, content_type='application/pdf')
-                        response['Content-Disposition'] = f'attachment; filename="ticket_{ticket.id}.pdf"'
-                        messages.success(request, "Votre achat a été effectué avec succès !")
-                        return response  # Télécharger automatiquement le PDF
+                    pdf_buffer.seek(0)  # Revenir au début du buffer
+                    ticket.pdf.save(f'ticket_{ticket.id}.pdf', pdf_buffer, save=True)
+
+                    # Réinitialiser le buffer pour la réponse
+                    pdf_buffer.seek(0)
+                    response = HttpResponse(pdf_buffer, content_type='application/pdf')
+                    response['Content-Disposition'] = f'attachment; filename="ticket_{ticket.id}.pdf"'
+                    messages.success(request, "Votre achat a été effectué avec succès !")
+                    return response  # Télécharger automatiquement le PDF
                 else:
                     # Rechercher d'autres bus programmés pour la même destination à la même heure
                     other_buses = Destination.objects.filter(
@@ -159,40 +159,40 @@ def purchase_ticket(request, destination_id):
                             ticket.user = user
                             ticket.is_confirmed = True
 
-                            # Vérifier si le montant payé est suffisant
-                            if ticket.amount_paid < bus_dest.montant:
-                                messages.error(request, "Le montant payé est insuffisant.")
-                            else:
-                                ticket.save()
+                            # Calculer le montant automatique de la destination
+                            ticket.amount_paid = bus_dest.montant
 
-                                # Créer le paiement associé
-                                payment = Payment.objects.create(ticket=ticket, transaction_id="SIMULATED_TRANSACTION_ID")
+                            # Sauvegarder le ticket
+                            ticket.save()
 
-                                # Générer le PDF du ticket
-                                template_path = 'ticket_pdf_template.html'
-                                context = {
-                                    'ticket': ticket,
-                                    'destination': bus_dest,
-                                    'departure_time': bus_dest.heure_depart,  # Ajouter l'heure de départ au contexte
-                                }
-                                template = get_template(template_path)
-                                html = template.render(context)
+                            # Créer le paiement associé
+                            payment = Payment.objects.create(ticket=ticket, transaction_id="SIMULATED_TRANSACTION_ID")
 
-                                # Convertir en PDF
-                                pdf_buffer = io.BytesIO()
-                                pisa_status = pisa.CreatePDF(html, dest=pdf_buffer)
-                                if pisa_status.err:
-                                    return HttpResponse('Une erreur est survenue lors de la génération du PDF.')
+                            # Générer le PDF du ticket
+                            template_path = 'ticket_pdf_template.html'
+                            context = {
+                                'ticket': ticket,
+                                'destination': bus_dest,
+                                'departure_time': bus_dest.heure_depart,  # Ajouter l'heure de départ au contexte
+                            }
+                            template = get_template(template_path)
+                            html = template.render(context)
 
-                                pdf_buffer.seek(0)  # Revenir au début du buffer
-                                ticket.pdf.save(f'ticket_{ticket.id}.pdf', pdf_buffer, save=True)
+                            # Convertir en PDF
+                            pdf_buffer = io.BytesIO()
+                            pisa_status = pisa.CreatePDF(html, dest=pdf_buffer)
+                            if pisa_status.err:
+                                return HttpResponse('Une erreur est survenue lors de la génération du PDF.')
 
-                                # Réinitialiser le buffer pour la réponse
-                                pdf_buffer.seek(0)
-                                response = HttpResponse(pdf_buffer, content_type='application/pdf')
-                                response['Content-Disposition'] = f'attachment; filename="ticket_{ticket.id}.pdf"'
-                                messages.success(request, "Votre achat a été effectué avec succès dans un autre bus !")
-                                return response  # Télécharger automatiquement le PDF
+                            pdf_buffer.seek(0)  # Revenir au début du buffer
+                            ticket.pdf.save(f'ticket_{ticket.id}.pdf', pdf_buffer, save=True)
+
+                            # Réinitialiser le buffer pour la réponse
+                            pdf_buffer.seek(0)
+                            response = HttpResponse(pdf_buffer, content_type='application/pdf')
+                            response['Content-Disposition'] = f'attachment; filename="ticket_{ticket.id}.pdf"'
+                            messages.success(request, "Votre achat a été effectué avec succès dans un autre bus !")
+                            return response  # Télécharger automatiquement le PDF
 
                     messages.error(request, 'Aucun bus disponible pour cette destination et cette heure.')
             else:
